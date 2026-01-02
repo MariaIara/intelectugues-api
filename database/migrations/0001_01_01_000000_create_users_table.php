@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('gender')->nullable();
-            // $table->foreignIdFor(Avatar::class)->nullable();
             $table->integer('sequence')->default(0);
-            $table->integer('score')->default(0);
+            $table->integer('general_score')->default(0);
+            $table->integer('weekly_score')->default(0);
+            // $table->foreignIdFor(Avatar::class)->default(1);
             // $table->foreignIdFor(Level::class)->nullable();
             $table->rememberToken();
             $table->timestamps();
