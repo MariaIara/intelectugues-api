@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Level;
+use App\Models\Track;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -26,6 +27,22 @@ class UserController extends Controller
 
         return response()->json([
             'data' => $words
+        ]);
+    }
+
+    public function challengeAttemptsByTrack(Request $request)
+    {
+        $challenges = Track::findOrFail($request->id)
+            ->challenges
+            ->pluck('id');
+
+        $attempts = $request->user()->challengeAttempts()->whereIn('challenge_id', $challenges)->get();
+
+        return response()->json([
+            'data' => [
+                'track_progress' => $attempts->count() / $challenges->count() * 100,
+                'attempts' => $attempts
+            ]
         ]);
     }
 }

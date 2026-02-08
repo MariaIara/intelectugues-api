@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TracksController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordsController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [UserController::class, 'info']);
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
+    Route::get('/user/tracks/{id}/challenge-attempts', [UserController::class, 'challengeAttemptsByTrack']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -22,6 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/words', [WordsController::class, 'create']); // admin
     Route::post('/words/{id}/favorite', [WordsController::class, 'favorite']);
     Route::delete('/words/{id}', [WordsController::class, 'delete']); // admin
+
+    Route::get('/tracks', [TracksController::class, 'index']);
+    Route::get('/tracks/{id}', [TracksController::class, 'info']);
+    Route::get('/tracks/{id}/challenges', [TracksController::class, 'challenges']);
 
     Route::middleware('admin')->group(function () {
         Route::post('/words', [WordsController::class, 'create']);
