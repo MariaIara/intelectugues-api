@@ -14,7 +14,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [UserController::class, 'info']);
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
-    Route::get('/user/tracks/{id}/challenge-attempts', [UserController::class, 'challengeAttemptsByTrack']);
+    Route::get('/user/tracks/{track}/challenges', [UserController::class, 'challengesByTrack']);
+    Route::get('/user/tracks/{track}/challenge-attempts', [UserController::class, 'challengeAttemptsByTrack']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -26,8 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/words/{id}', [WordsController::class, 'delete']); // admin
 
     Route::get('/tracks', [TracksController::class, 'index']);
-    Route::get('/tracks/{id}', [TracksController::class, 'info']);
-    Route::get('/tracks/{id}/challenges', [TracksController::class, 'challenges']);
+    Route::get('/tracks/{track}', [TracksController::class, 'info']);
+    Route::get('/tracks/{track}/challenges', [TracksController::class, 'challenges']);
 
     Route::middleware('admin')->group(function () {
         Route::post('/words', [WordsController::class, 'create']);

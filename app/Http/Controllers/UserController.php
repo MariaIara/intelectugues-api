@@ -30,13 +30,32 @@ class UserController extends Controller
         ]);
     }
 
-    public function challengeAttemptsByTrack(Request $request)
+    public function challengesByTrack(Request $request, Track $track)
     {
-        $challenges = Track::findOrFail($request->id)
-            ->challenges
-            ->pluck('id');
+        $challenges = $track->challenges()->withCount('questions')->get();
 
-        $attempts = $request->user()->challengeAttempts()->whereIn('challenge_id', $challenges)->get();
+        $attempts = $request->user()
+            ->challengeAttempts()
+            ->whereIn('challenge_id', $challenges->pluck('id'))
+            ->get();
+
+        foreach ($challenges as $challenge) {
+            $challenge->finished = $attempts->contains('challenge_id', $challenge->id);
+        }
+
+        return response()->json([
+            'data' => $challenges
+        ]);
+    }
+
+    public function challengeAttemptsByTrack(Request $request, Track $track)
+    {
+        $challenges = $track->challenges->pluck('id');
+
+        $attempts = $request->user()
+            ->challengeAttempts()
+            ->whereIn('challenge_id', $challenges)
+            ->get();
 
         return response()->json([
             'data' => [

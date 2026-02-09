@@ -12,15 +12,13 @@ class TracksController extends Controller
         return response()->json(['data' => Track::paginate(10)]);
     }
 
-    public function info(Request $request)
+    public function info(Track $track)
     {
-        return response()->json(['data' => Track::find($request->id)]);
+        return response()->json(['data' => $track]);
     }
 
-    public function challenges(Request $request)
+    public function challenges(Track $track)
     {
-        $track = Track::find($request->id);
-
         return response()->json([
             'data' => $track->challenges
         ]);
