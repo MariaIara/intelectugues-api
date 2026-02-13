@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('image');
             $table->integer('index');
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }

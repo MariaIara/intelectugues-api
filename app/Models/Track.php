@@ -10,7 +10,12 @@ class Track extends Model
         'name',
         'description',
         'image',
-        'index'
+        'index',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     public function challenges()
