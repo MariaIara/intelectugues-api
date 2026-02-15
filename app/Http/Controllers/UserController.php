@@ -44,7 +44,10 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'data' => $challenges
+            'data' => [
+                'track' => $track,
+                'challenges' => $challenges
+            ]
         ]);
     }
 
