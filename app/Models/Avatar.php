@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Avatar extends Model
 {
     protected $fillable = [
-        'image'
+        'image',
+        'is_default',
     ];
 
     public function users()
