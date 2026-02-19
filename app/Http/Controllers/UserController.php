@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Level;
 use App\Models\Track;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -65,6 +66,20 @@ class UserController extends Controller
                 'track_progress' => $attempts->count() / $challenges->count() * 100,
                 'attempts' => $attempts
             ]
+        ]);
+    }
+
+
+    public function ranking(Request $request)
+    {
+        $users = User::query()
+            ->with('avatar')
+            ->select(['id', 'name', 'weekly_score', 'avatar_id'])
+            ->orderByDesc('weekly_score')
+            ->paginate(10);
+
+        return response()->json([
+            'data' => $users
         ]);
     }
 }

@@ -16,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
     Route::get('/user/tracks/{track}/challenges', [UserController::class, 'challengesByTrack']);
     Route::get('/user/tracks/{track}/challenge-attempts', [UserController::class, 'challengeAttemptsByTrack']);
+    Route::get('/users/ranking', [UserController::class, 'ranking']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 
