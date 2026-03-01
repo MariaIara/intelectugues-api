@@ -29,4 +29,15 @@ class Challenge extends Model
     {
         return $this->hasMany(ChallengeAttempt::class);
     }
+
+    public function isBlocked(User $user, Challenge $challenge): bool
+    {
+        $attempts = $user->challengeAttempts();
+
+        return !$this
+            ->where('track_id', $challenge->track_id)
+            ->where('index', ($challenge->index - 1))
+            ->whereIn('id', $attempts->pluck('challenge_id')->toArray())
+            ->exists();
+    }
 }
