@@ -25,7 +25,7 @@ class UserController extends Controller
 
         $user->level->next_level = Level::where('name', $user->level->next_level)->first();
 
-        $user->level->progress = $this->userService->calculateProgressLevel($user);
+        $user->level->percentual_progress = $this->userService->calculateProgressLevel($user);
 
         return response()->json([
             'data' => $user

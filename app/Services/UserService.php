@@ -71,11 +71,11 @@ class UserService
         $user->save();
     }
 
-    public function calculateProgressLevel(User $user): string
+    public function calculateProgressLevel(User $user): int
     {
         $level = $user->level;
 
-        $progress = ($user->general_score - $level->needed_score) / ($level->next_level->needed_score - $level->needed_score) . '%';
+        $progress = ($user->general_score - $level->needed_score) / ($level->next_level->needed_score - $level->needed_score);
 
         return $progress;
     }
