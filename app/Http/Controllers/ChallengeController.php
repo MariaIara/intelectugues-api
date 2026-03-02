@@ -46,6 +46,7 @@ class ChallengeController extends Controller
         DB::transaction(function () use ($user, $challenge, $request) {
             $this->userService->addSequence($user);
             $this->userService->addScore($user, $challenge, $request->boolean('without_errors'));
+            $this->userService->levelUp($user, $challenge);
 
             ChallengeAttempt::create([
                 'challenge_id' => $challenge->id,

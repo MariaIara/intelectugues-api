@@ -34,7 +34,7 @@ class UserService
         if ($user->challengeAttempts()->whereDate('finished_at', today())->exists()) {
             return;
         }
-        
+
         $user->general_sequence = $user->general_sequence + 1;
         $user->weekly_sequence = $user->weekly_sequence + 1;
         $user->save();
@@ -53,5 +53,30 @@ class UserService
         $user->general_score = $user->general_score + $score;
         $user->weekly_score = $user->weekly_score + $score;
         $user->save();
+    }
+
+    public function levelUp(User $user, Challenge $challenge)
+    {
+        if ($user->challengeAttempts()->whereId($challenge->id)->exists()) {
+            return;
+        }
+
+        $next_level = Level::where('name', $user->level->next_level)->first();
+
+        if ($user->general_score < $next_level?->needed_score) {
+            return;
+        }
+
+        $next_level && $user->level_id = $next_level->id;
+        $user->save();
+    }
+
+    public function calculateProgressLevel(User $user): string
+    {
+        $level = $user->level;
+
+        $progress = ($user->general_score - $level->needed_score) / ($level->next_level->needed_score - $level->needed_score) . '%';
+
+        return $progress;
     }
 }

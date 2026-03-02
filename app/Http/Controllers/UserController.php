@@ -5,10 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Level;
 use App\Models\Track;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    protected UserService $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+    }
+
     public function info(Request $request)
     {
         $user = $request
@@ -16,6 +24,8 @@ class UserController extends Controller
             ->load('avatar', 'level');
 
         $user->level->next_level = Level::where('name', $user->level->next_level)->first();
+
+        $user->level->progress = $this->userService->calculateProgressLevel($user);
 
         return response()->json([
             'data' => $user
