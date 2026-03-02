@@ -31,11 +31,13 @@ class UserService
 
     public function addSequence(User $user)
     {
-        if (!$user->challengeAttempts()->whereDate('finished_at', today())->exists()) {
-            $user->general_sequence = $user->general_sequence + 1;
-            $user->weekly_sequence = $user->weekly_sequence + 1;
-            $user->save();
+        if ($user->challengeAttempts()->whereDate('finished_at', today())->exists()) {
+            return;
         }
+        
+        $user->general_sequence = $user->general_sequence + 1;
+        $user->weekly_sequence = $user->weekly_sequence + 1;
+        $user->save();
     }
 
     public function addScore(User $user, Challenge $challenge, bool $without_errors)
