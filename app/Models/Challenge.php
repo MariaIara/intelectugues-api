@@ -36,8 +36,11 @@ class Challenge extends Model
 
         return !$this
             ->where('track_id', $challenge->track_id)
-            ->where('index', ($challenge->index - 1))
             ->whereIn('id', $attempts->pluck('challenge_id')->toArray())
+            ->where(function($q) use($challenge) {
+                $q->where('index', $challenge->index - 1)
+                    ->orWhere('index', 0);
+            })
             ->exists();
     }
 }

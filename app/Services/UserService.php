@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\Avatar;
+use App\Models\Challenge;
 use App\Models\Level;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserService
@@ -24,5 +27,29 @@ class UserService
             'level_id' => $level->id,
             'password' => Hash::make($data['password'])
         ]);
+    }
+
+    public function addSequence(User $user)
+    {
+        if (!$user->challengeAttempts()->whereDate('finished_at', today())->exists()) {
+            $user->general_sequence = $user->general_sequence + 1;
+            $user->weekly_sequence = $user->weekly_sequence + 1;
+            $user->save();
+        }
+    }
+
+    public function addScore(User $user, Challenge $challenge, bool $without_errors)
+    {
+        if ($user->challengeAttempts()->whereId($challenge->id)->exists()) {
+            return;
+        }
+
+        $score = $without_errors
+            ? $challenge->score * 2
+            : $challenge->score;
+
+        $user->general_score = $user->general_score + $score;
+        $user->weekly_score = $user->weekly_score + $score;
+        $user->save();
     }
 }

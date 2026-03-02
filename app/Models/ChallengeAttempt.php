@@ -9,7 +9,6 @@ class ChallengeAttempt extends Model
     protected $fillable = [
         'challenge_id',
         'user_id',
-        'password',
         'finished_at'
     ];
 

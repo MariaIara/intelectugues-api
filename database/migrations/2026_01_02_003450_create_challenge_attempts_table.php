@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Challenge::class);
             $table->foreignIdFor(User::class);
             $table->date('finished_at');
+            $table->timestamps();
         });
     }
 

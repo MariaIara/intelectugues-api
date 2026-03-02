@@ -2,11 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChallengeRequest;
 use App\Models\Challenge;
+use App\Models\ChallengeAttempt;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChallengeController extends Controller
 {
+    protected UserService $userService;
+
+    public function __construct()
+    {
+        $this->userService = new UserService();
+    }
+
     public function info(Request $request, Challenge $challenge)
     {
         $user = $request->user();
@@ -19,6 +30,32 @@ class ChallengeController extends Controller
 
         return response()->json([
             'data' => $challenge->load('questions.alternatives')
+        ]);
+    }
+
+    public function attempt(ChallengeRequest $request, Challenge $challenge)
+    {
+        $user = $request->user();
+
+        $is_blocked = $challenge->isBlocked($user, $challenge);
+
+        if ($is_blocked) {
+            return response()->json(['error' => 'É necessário finalizar o desafio anterior.'], 400);
+        }
+
+        DB::transaction(function () use ($user, $challenge, $request) {
+            $this->userService->addSequence($user);
+            $this->userService->addScore($user, $challenge, $request->boolean('without_errors'));
+
+            ChallengeAttempt::create([
+                'challenge_id' => $challenge->id,
+                'user_id' => $user->id,
+                'finished_at' => now()
+            ]);
+        });
+
+        return response()->json([
+            'response' => 'Challenge Attempt Created Successfully'
         ]);
     }
 }

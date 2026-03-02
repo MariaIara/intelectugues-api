@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tracks/{track}', [TracksController::class, 'info']);
     Route::get('/tracks/{track}/challenges', [TracksController::class, 'challenges']);
 
+    Route::post('/challenges/{challenge}/attempt', [ChallengeController::class, 'attempt']);
     Route::get('/challenges/{challenge}', [ChallengeController::class, 'info']);
 
     Route::middleware('admin')->group(function () {
