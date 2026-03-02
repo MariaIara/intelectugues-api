@@ -12,7 +12,7 @@ Route::get('/ping', fn() => 'pong');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum', 'check_sequence')->group(function () {
     Route::get('/profile', [UserController::class, 'info']);
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
     Route::get('/user/tracks/{track}/challenges', [UserController::class, 'challengesByTrack']);

@@ -42,7 +42,7 @@ class UserService
 
     public function addScore(User $user, Challenge $challenge, bool $without_errors)
     {
-        if ($user->challengeAttempts()->whereId($challenge->id)->exists()) {
+        if ($user->challengeAttempts()->whereChallengeId($challenge->id)->exists()) {
             return;
         }
 
@@ -57,7 +57,7 @@ class UserService
 
     public function levelUp(User $user, Challenge $challenge)
     {
-        if ($user->challengeAttempts()->whereId($challenge->id)->exists()) {
+        if ($user->challengeAttempts()->whereChallengeId($challenge->id)->exists()) {
             return;
         }
 
