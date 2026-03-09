@@ -50,8 +50,21 @@ class UserController extends Controller
             ->whereIn('challenge_id', $challenges->pluck('id'))
             ->get();
 
+        $blockeds = [];
+
+        foreach ($challenges as $challenge) {            
+            if ($attempts->contains('challenge_id', $challenge->id)) {
+                $challenge->status = 'finished';
+            } else {
+                $challenge->status = 'blocked';
+                $blockeds[] = $challenge;
+            }
+        }
+
         foreach ($challenges as $challenge) {
-            $challenge->finished = $attempts->contains('challenge_id', $challenge->id);
+            if($challenge->id == $blockeds[0]->id) {
+                $challenge->status = 'in_progress';
+            }
         }
 
         return response()->json([
