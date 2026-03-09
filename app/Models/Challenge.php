@@ -32,15 +32,17 @@ class Challenge extends Model
 
     public function isBlocked(User $user, Challenge $challenge): bool
     {
-        $attempts = $user->challengeAttempts();
+        if ($challenge->index === 0) {
+            return false;
+        }
 
-        return !$this
-            ->where('track_id', $challenge->track_id)
-            ->whereIn('id', $attempts->pluck('challenge_id')->toArray())
-            ->where(function($q) use($challenge) {
-                $q->where('index', $challenge->index - 1)
-                    ->orWhere('index', 0);
+        $hasPreviousAttempt = $user->challengeAttempts()
+            ->whereHas('challenge', function ($q) use ($challenge) {
+                $q->where('track_id', $challenge->track_id)
+                ->where('index', $challenge->index - 1);
             })
             ->exists();
+
+        return !$hasPreviousAttempt;
     }
 }

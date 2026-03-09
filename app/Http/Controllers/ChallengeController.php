@@ -22,9 +22,9 @@ class ChallengeController extends Controller
     {
         $user = $request->user();
 
-        $is_bloked = $challenge->isBlocked($user, $challenge);
+        $is_blocked = $challenge->isBlocked($user, $challenge);
 
-        if ($is_bloked) {
+        if ($is_blocked) {
             return response()->json(['error' => 'É necessário finalizar o desafio anterior.'], 400);
         }
 
