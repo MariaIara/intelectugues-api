@@ -74,6 +74,10 @@ class UserService
     public function calculateProgressLevel(User $user): float
     {
         $level = $user->level;
+        
+        if (!$level->next_level) {
+            return 100;
+        }
 
         $progress = (($user->general_score - $level->needed_score) / ($level->next_level->needed_score - $level->needed_score)) * 100;
 

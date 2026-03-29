@@ -34,10 +34,14 @@ class UserController extends Controller
 
     public function favoriteWords(Request $request)
     {
-        $words = $request->user()->words()->get();
+        $words = $request->user()->words();
+
+        if ($request->has('search')) {
+            $words = $words->where('word', 'like', '%' . $request->input('search') . '%');
+        }
 
         return response()->json([
-            'data' => $words
+            'data' => $words->get()
         ]);
     }
 
