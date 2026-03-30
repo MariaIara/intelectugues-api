@@ -43,6 +43,10 @@ class ChallengeController extends Controller
             return response()->json(['error' => 'É necessário finalizar o desafio anterior.'], 400);
         }
 
+        if (!$challenge->alredyAttempted($user, $challenge)) {
+            return response()->json(['response' => 'Challenge attempt answered'], 200);
+        }
+
         DB::transaction(function () use ($user, $challenge, $request) {
             $this->userService->addSequence($user);
             $this->userService->addScore($user, $challenge, $request->boolean('without_errors'));
@@ -56,7 +60,7 @@ class ChallengeController extends Controller
         });
 
         return response()->json([
-            'response' => 'Challenge Attempt Created Successfully'
-        ]);
+            'response' => 'Challenge answered and attempt created successfully'
+        ], 201);
     }
 }

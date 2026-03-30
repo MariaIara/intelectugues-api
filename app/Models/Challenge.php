@@ -45,4 +45,14 @@ class Challenge extends Model
 
         return !$hasPreviousAttempt;
     }
+
+    public function alredyAttempted(User $user, Challenge $challenge): bool
+    {
+        return $user->challengeAttempts()
+            ->whereHas('challenge', function ($q) use ($challenge) {
+                $q->where('track_id', $challenge->track_id)
+                ->where('id', $challenge->id);
+            })
+            ->exists();
+    }
 }
