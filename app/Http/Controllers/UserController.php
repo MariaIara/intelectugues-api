@@ -41,7 +41,7 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'data' => $words->get()
+            'data' => $words->orderBy('id', 'desc')->get()
         ]);
     }
 
