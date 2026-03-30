@@ -43,7 +43,7 @@ class ChallengeController extends Controller
             return response()->json(['error' => 'É necessário finalizar o desafio anterior.'], 400);
         }
 
-        if (!$challenge->alredyAttempted($user, $challenge)) {
+        if ($challenge->alredyAttempted($user, $challenge)) {
             return response()->json(['response' => 'Challenge attempt answered'], 200);
         }
 
