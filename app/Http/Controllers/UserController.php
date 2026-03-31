@@ -32,6 +32,15 @@ class UserController extends Controller
         ]);
     }
 
+    public function achievements(Request $request)
+    {
+        $user = $request->user();
+
+        return response()->json([
+            'data' => $user->achievements
+        ]);
+    }
+
     public function favoriteWords(Request $request)
     {
         $words = $request->user()->words();
@@ -56,7 +65,7 @@ class UserController extends Controller
 
         $blockeds = [];
 
-        foreach ($challenges as $challenge) {            
+        foreach ($challenges as $challenge) {
             if ($attempts->contains('challenge_id', $challenge->id)) {
                 $challenge->status = 'finished';
             } else {
@@ -66,7 +75,7 @@ class UserController extends Controller
         }
 
         foreach ($challenges as $challenge) {
-            if($challenge->id == $blockeds[0]->id) {
+            if ($challenge->id == $blockeds[0]->id) {
                 $challenge->status = 'in_progress';
             }
         }

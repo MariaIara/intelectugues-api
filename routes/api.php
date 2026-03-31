@@ -14,6 +14,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum', 'check_sequence')->group(function () {
     Route::get('/profile', [UserController::class, 'info']);
+    Route::get('/user/achievements', [UserController::class, 'achievements']);
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
     Route::get('/user/tracks/{track}/challenges', [UserController::class, 'challengesByTrack']);
     Route::get('/user/tracks/{track}/challenge-attempts', [UserController::class, 'challengeAttemptsByTrack']);

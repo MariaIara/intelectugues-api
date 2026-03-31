@@ -71,7 +71,8 @@ class User extends Authenticatable
     public function achievements()
     {
         return $this->belongsToMany(Achievement::class, 'user_achievement')
-            ->withPivot('created_at', 'updated_at');
+            ->withPivot('created_at', 'updated_at')
+            ->orderByPivot('id', 'desc');
     }
 
     public function words()
