@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WordsController;
 use Illuminate\Support\Facades\Route;
 
+
+// Router test
 Route::get('/ping', fn() => 'pong');
 
 Route::post('/register', [AuthController::class, 'register']);
