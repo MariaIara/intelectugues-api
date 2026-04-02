@@ -13,6 +13,8 @@ echo "==> Rodando migrations..."
 php artisan migrate --force --no-interaction
 
 echo "==> Limpando e aquecendo caches..."
+php artisan config:clear
+php artisan cache:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
