@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-echo "==> Copiando .env de exemplo se não existir..."
-if [ ! -f /var/www/html/.env ]; then
+echo "==> Verificando .env..."
+if [ ! -f /var/www/html/.env ] && [ -f /var/www/html/.env.example ]; then
     cp /var/www/html/.env.example /var/www/html/.env
 fi
 

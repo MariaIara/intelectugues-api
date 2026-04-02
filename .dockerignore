@@ -3,7 +3,9 @@
 node_modules
 vendor
 .env
-.env.*
+.env.backup
+.env.production
+!.env.example
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
