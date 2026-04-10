@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\QuestionTemplateEnum;
 use Illuminate\Database\Seeder;
 use App\Models\Track;
 use App\Models\Challenge;
@@ -94,7 +95,8 @@ class PortugueseLearningSeeder extends Seeder
 
                     $question = Question::create([
                         'statement' => $q['statement'],
-                        'challenge_id' => $challenge->id
+                        'template_type' => $q['template_type'],
+                        'challenge_id' => $challenge->id,
                     ]);
 
                     foreach ($q['alternatives'] as $alt) {
@@ -126,12 +128,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Os alunos chegou.", false],
                 ["O alunos chegaram.", false],
             ),
-            $this->q(
-                "Complete corretamente:",
-                ["As menina bonita.", false],
-                ["As meninas bonitas.", true],
-                ["As meninas bonito.", false],
-                ["A meninas bonitas.", false],
+            $this->qFill(
+                "No parque ___ muitas crianças brincando.",
+                ["havia", true],
+                ["haviam", false],
+                ["haveriam", false],
+                ["tem", false],
             ),
             $this->q(
                 "Qual frase está correta?",
@@ -140,12 +142,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Segue anexo os documentos.", false],
                 ["Seguem anexo os documentos.", false],
             ),
-            $this->q(
-                "Escolha a concordância adequada:",
-                ["É proibido entradas.", false],
-                ["É proibida a entrada.", true],
-                ["São proibido entrada.", false],
-                ["É proibidas entrada.", false],
+            $this->qFill(
+                "É ___ a entrada de menores.",
+                ["proibida", true],
+                ["proibido", false],
+                ["proibidas", false],
+                ["proibidos", false],
             ),
         ];
     }
@@ -160,12 +162,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Excessão", false],
                 ["Eceção", false],
             ),
-            $this->q(
-                "Assinale a grafia correta:",
-                ["Enxergar", true],
-                ["Inxergar", false],
-                ["Enchergar", false],
-                ["Inchergar", false],
+            $this->qFill(
+                "Ele não consegue ___ direito por causa da miopia.",
+                ["enxergar", true],
+                ["inxergar", false],
+                ["enchergar", false],
+                ["inchergar", false],
             ),
             $this->q(
                 "Qual está correta?",
@@ -181,12 +183,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Atrazs", false],
                 ["Atrász", false],
             ),
-            $this->q(
-                "Grafia correta:",
-                ["Concerteza", false],
-                ["Com certeza", true],
-                ["Conserteza", false],
-                ["Concertesa", false],
+            $this->qFill(
+                "Com ___ ele passou na prova.",
+                ["certeza", true],
+                ["serteza", false],
+                ["certesa", false],
+                ["certêza", false],
             ),
         ];
     }
@@ -201,12 +203,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Idéia", false],
                 ["Ideía", false],
             ),
-            $this->q(
-                "Assinale a correta:",
-                ["Voce", false],
-                ["Você", true],
-                ["Vôce", false],
-                ["Voçê", false],
+            $this->qFill(
+                "Preciso de um ___ bem forte agora.",
+                ["café", true],
+                ["cafe", false],
+                ["cafê", false],
+                ["cáfe", false],
             ),
             $this->q(
                 "Qual possui acento obrigatório?",
@@ -215,12 +217,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Livro", false],
                 ["Mesa", false],
             ),
-            $this->q(
-                "Escolha a forma correta:",
-                ["Heroi", false],
-                ["Herói", true],
-                ["Héroi", false],
-                ["Heroí", false],
+            $this->qFill(
+                "Ele é um verdadeiro ___ da literatura brasileira.",
+                ["herói", true],
+                ["heroi", false],
+                ["héroi", false],
+                ["heroí", false],
             ),
             $this->q(
                 "Palavra corretamente acentuada:",
@@ -242,12 +244,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Eu ido", false],
                 ["Eu indo", false],
             ),
-            $this->q(
-                "Complete:",
-                ["Nós fizemos o trabalho.", true],
-                ["Nós fez o trabalho.", false],
-                ["Nós faz o trabalho.", false],
-                ["Nós fazendo o trabalho.", false],
+            $this->qFill(
+                "Nós ___ o trabalho antes do prazo.",
+                ["fizemos", true],
+                ["fez", false],
+                ["faz", false],
+                ["fazendo", false],
             ),
             $this->q(
                 "Tempo verbal de 'cantarei':",
@@ -263,12 +265,12 @@ class PortugueseLearningSeeder extends Seeder
                 ["Eles traz", false],
                 ["Eles trazeram", false],
             ),
-            $this->q(
-                "Verbo no presente:",
-                ["Corri", false],
-                ["Corria", false],
-                ["Corro", true],
-                ["Correrei", false],
+            $this->qFill(
+                "Amanhã eu ___ ao cinema com minha família.",
+                ["irei", true],
+                ["fui", false],
+                ["ia", false],
+                ["indo", false],
             ),
         ];
     }
@@ -277,6 +279,19 @@ class PortugueseLearningSeeder extends Seeder
     {
         return [
             'statement' => $statement,
+            'template_type' => QuestionTemplateEnum::Standard,
+            'alternatives' => collect($alts)->map(fn($a) => [
+                'text' => $a[0],
+                'correct' => $a[1]
+            ])->toArray()
+        ];
+    }
+
+    private function qFill($statement, ...$alts)
+    {
+        return [
+            'statement' => $statement,
+            'template_type' => QuestionTemplateEnum::FillInTheBlank,
             'alternatives' => collect($alts)->map(fn($a) => [
                 'text' => $a[0],
                 'correct' => $a[1]

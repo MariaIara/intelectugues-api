@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('statement');
+            $table->string('template_type')->default('standard');
             $table->foreignIdFor(Challenge::class);
             $table->timestamps();
         });
