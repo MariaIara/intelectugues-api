@@ -16,11 +16,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-            UsersSeeder::class,
+            AvatarsSeeder::class,
         ]);
 
         $this->call([
-            AvatarsSeeder::class,
+            UsersSeeder::class,
         ]);
 
         $this->call([

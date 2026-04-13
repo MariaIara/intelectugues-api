@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Avatar;
 use App\Models\Level;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -10,6 +11,9 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
+        $defaultAvatar = Avatar::where('is_default', true)->first();
+        $levelId = Level::first()->id;
+
         User::create([
             'name' => 'Iara Braga',
             'email' => 'iara@gmail.com',
@@ -17,7 +21,8 @@ class UsersSeeder extends Seeder
             'weekly_sequence' => 0,
             'general_score' => 0,
             'weekly_score' => 0,
-            'level_id' => Level::first()->id,
+            'level_id' => $levelId,
+            'avatar_id' => $defaultAvatar->id,
             'created_at' => now()
         ]);
 
@@ -29,7 +34,8 @@ class UsersSeeder extends Seeder
                 'weekly_sequence' => 0,
                 'general_score' => 0,
                 'weekly_score' => 0,
-                'level_id' => Level::first()->id,
+                'level_id' => $levelId,
+                'avatar_id' => $defaultAvatar->id,
                 'created_at' => now()
             ]);
         }
