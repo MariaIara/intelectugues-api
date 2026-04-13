@@ -12,22 +12,27 @@ class AvatarsSeeder extends Seeder
         $avatars = [
             [
                 'image' => '/src/assets/avatar/avatar-one.svg',
+                'is_default' => true,
                 'created_at' => now()
             ],
             [
                 'image' => '/src/assets/avatar/avatar-two.svg',
+                'is_default' => false,
                 'created_at' => now()
             ],
             [
                 'image' => '/src/assets/avatar/avatar-three.svg',
+                'is_default' => false,
                 'created_at' => now()
             ],
             [
                 'image' => '/src/assets/avatar/avatar-four.svg',
+                'is_default' => false,
                 'created_at' => now()
             ],
             [
                 'image' => '/src/assets/avatar/avatar-five.svg',
+                'is_default' => false,
                 'created_at' => now()
             ]
         ];
