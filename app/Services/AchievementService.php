@@ -7,6 +7,7 @@ use App\Models\Achievement;
 use App\Models\ChallengeAttempt;
 use App\Models\Track;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class AchievementService
 {
@@ -53,22 +54,17 @@ class AchievementService
             ->each(fn($achievement) => $this->award($user, $achievement));
     }
 
-    public function checkRanking(User $user): void
+    public function checkRanking(Collection $topUsers): void
     {
-        $position = User::orderByDesc('weekly_score')
-            ->pluck('id')
-            ->search($user->id);
+        $rankingAchievements = Achievement::where('type', AchievementTypeEnum::Ranking)->get();
 
-        if ($position === false) {
-            return;
-        }
+        $topUsers->each(function (User $user, int $index) use ($rankingAchievements) {
+            $position = $index + 1;
 
-        $position = $position + 1;
-
-        Achievement::where('type', AchievementTypeEnum::Ranking)
-            ->where('value', '>=', $position)
-            ->get()
-            ->each(fn($achievement) => $this->award($user, $achievement));
+            $rankingAchievements
+                ->where('value', '>=', $position)
+                ->each(fn($achievement) => $this->award($user, $achievement));
+        });
     }
 
     private function award(User $user, Achievement $achievement): void
