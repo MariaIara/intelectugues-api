@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChallengeRequest;
 use App\Models\Challenge;
 use App\Models\ChallengeAttempt;
+use App\Services\AchievementService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,10 +13,12 @@ use Illuminate\Support\Facades\DB;
 class ChallengeController extends Controller
 {
     protected UserService $userService;
+    protected AchievementService $achievementService;
 
     public function __construct()
     {
         $this->userService = new UserService();
+        $this->achievementService = new AchievementService();
     }
 
     public function info(Request $request, Challenge $challenge)
@@ -57,6 +60,10 @@ class ChallengeController extends Controller
                 'user_id' => $user->id,
                 'finished_at' => now()
             ]);
+
+            $this->achievementService->checkSequence($user);
+            $this->achievementService->checkTrack($user, $challenge->track);
+            // $this->achievementService->checkRanking($user);
         });
 
         return response()->json([

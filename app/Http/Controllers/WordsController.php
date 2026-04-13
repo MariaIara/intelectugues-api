@@ -6,16 +6,19 @@ use App\Adapters\internalDictionary;
 use App\Http\Requests\WordsCreateRequest;
 use App\Interfaces\DictionaryInterface;
 use App\Models\Word;
+use App\Services\AchievementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WordsController extends Controller
 {
     protected DictionaryInterface $api;
+    protected AchievementService $achievementService;
 
     public function __construct()
     {
         $this->api = new internalDictionary();
+        $this->achievementService = new AchievementService();
     }
 
     public function index()
@@ -50,9 +53,14 @@ class WordsController extends Controller
     {
         $word = Word::findOrFail($request->id);
 
-        $toggle_fav = $word->users()->toggle(Auth::user()->id);
+        $user = Auth::user();
+        $toggle_fav = $word->users()->toggle($user->id);
 
         $favorited = empty($toggle_fav['detached']);
+
+        if ($favorited) {
+            $this->achievementService->checkFavoriteWords($user);
+        }
 
         return response()->json([
             'message' => $favorited ? 'Word favorited successfully.' : 'Word unfavorited successfully.'

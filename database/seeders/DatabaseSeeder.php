@@ -30,5 +30,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PortugueseLearningSeeder::class,
         ]);
+
+        $this->call([
+            AchievementsSeeder::class,
+        ]);
     }
 }
