@@ -6,6 +6,7 @@ use App\Models\Level;
 use App\Models\Track;
 use App\Models\User;
 use App\Services\UserService;
+use App\Http\Requests\UpdateProfileRequest;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,6 +16,17 @@ class UserController extends Controller
     public function __construct()
     {
         $this->userService = new UserService();
+    }
+
+    public function updateProfile(UpdateProfileRequest $request)
+    {
+        $user = $request->user();
+
+        $user->update($request->only('name', 'avatar_id'));
+
+        return response()->json([
+            'data' => $user->load('avatar')
+        ]);
     }
 
     public function info(Request $request)
@@ -75,7 +87,7 @@ class UserController extends Controller
         }
 
         foreach ($challenges as $challenge) {
-            if ($challenge->id == $blockeds[0]->id) {
+            if ($blockeds && $challenge->id == $blockeds[0]->id) {
                 $challenge->status = 'in_progress';
             }
         }

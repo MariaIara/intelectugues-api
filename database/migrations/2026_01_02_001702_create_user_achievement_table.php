@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Achievement::class);
+            $table->unique(['user_id', 'achievement_id']);
             $table->timestamps();
         });
     }

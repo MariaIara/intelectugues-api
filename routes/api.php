@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\ChallengeController;
 use App\Http\Controllers\TracksController;
 use App\Http\Controllers\UserController;
@@ -15,7 +16,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum', 'check_sequence')->group(function () {
+    Route::get('/avatars', [AvatarController::class, 'index']);
     Route::get('/profile', [UserController::class, 'info']);
+    Route::patch('/profile', [UserController::class, 'updateProfile']);
     Route::get('/user/achievements', [UserController::class, 'achievements']);
     Route::get('/user/words', [UserController::class, 'favoriteWords']);
     Route::get('/user/tracks/{track}/challenges', [UserController::class, 'challengesByTrack']);

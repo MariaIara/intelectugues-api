@@ -69,10 +69,6 @@ class AchievementService
 
     private function award(User $user, Achievement $achievement): void
     {
-        if ($user->achievements()->whereKey($achievement->id)->exists()) {
-            return;
-        }
-
-        $user->achievements()->attach($achievement->id);
+        $user->achievements()->syncWithoutDetaching([$achievement->id]);
     }
 }
