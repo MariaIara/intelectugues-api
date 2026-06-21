@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Level;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class LevelsSeeder extends Seeder
@@ -22,35 +21,35 @@ class LevelsSeeder extends Seeder
                 'name' => 'Prata',
                 'image' => 'images/level1.png',
                 'created_at' => now(),
-                'needed_score' => 20,
+                'needed_score' => 80,
                 'next_level' => 'Ouro'
             ],
             [
                 'name' => 'Ouro',
                 'image' => 'images/level1.png',
                 'created_at' => now(),
-                'needed_score' => 40,
+                'needed_score' => 160,
                 'next_level' => 'Platina'
             ],
             [
                 'name' => 'Platina',
                 'image' => 'images/level1.png',
                 'created_at' => now(),
-                'needed_score' => 60,
+                'needed_score' => 240,
                 'next_level' => 'Diamante'
             ],
             [
                 'name' => 'Diamante',
                 'image' => 'images/level1.png',
                 'created_at' => now(),
-                'needed_score' => 80,
+                'needed_score' => 320,
                 'next_level' => 'Mestre'
             ],
             [
                 'name' => 'Mestre',
                 'image' => 'images/level1.png',
                 'created_at' => now(),
-                'needed_score' => 100,
+                'needed_score' => 400,
                 'next_level' => null
             ]
         ];

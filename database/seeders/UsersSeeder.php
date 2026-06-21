@@ -26,7 +26,7 @@ class UsersSeeder extends Seeder
             'created_at' => now()
         ]);
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             User::create([
                 'name' => "User $i",
                 'email' => "user$i@gmail.com",
